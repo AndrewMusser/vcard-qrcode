@@ -1,5 +1,8 @@
 import qrcode
 from PIL import Image, ImageDraw, ImageOps
+from qrcode.image.styledpil import StyledPilImage
+from qrcode.image.styles.moduledrawers import RoundedModuleDrawer
+from qrcode.image.styles.colormasks import RadialGradiantColorMask, SolidFillColorMask
 
 vcard_data = ""
 with open('../data/contact.vcf', 'r', encoding='utf-8') as file:
@@ -14,13 +17,12 @@ qr = qrcode.QRCode(
 qr.add_data(vcard_data)
 qr.make(fit=True)
 
-from qrcode.image.styledpil import StyledPilImage
-from qrcode.image.styles.moduledrawers import RoundedModuleDrawer,VerticalBarsDrawer,SquareModuleDrawer
-
 # Create the QR code image with custom colors (change 'fill' and 'back_color')
 img = qr.make_image(
     image_factory=StyledPilImage,
-    embeded_image_path="../data/Logo-with-circle.png"
+    embeded_image_path="../data/Logo-with-circle.png",
+    module_drawer=RoundedModuleDrawer(),
+    color_mask=SolidFillColorMask(back_color=(234,224,218), front_color=(84, 176, 251))
 )
 
 # Add rounded corners to the QR code
